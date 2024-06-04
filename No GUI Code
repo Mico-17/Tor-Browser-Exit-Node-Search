@@ -1,0 +1,28 @@
+import requests
+
+url = 'https://raw.githubusercontent.com/SecOps-Institute/Tor-IP-Addresses/master/tor-exit-nodes.lst'
+
+
+response = requests.get(url)
+if response.status_code == 200:
+
+    initial_file_name = 'ExitNodes.py'
+
+    with open(initial_file_name, 'w') as file:
+        file.write(response.text)
+    print("File downloaded and saved as ExitNodes.py")
+else:
+    print("Failed to download the file. Status code:", response.status_code)
+
+
+with open('example.py', 'r') as file:
+    content = file.read()
+
+
+search_ip = '101.99.92.179'
+
+
+if search_ip in content:
+    print(f"The IP address {search_ip} was found in the file.")
+else:
+    print(f"The IP address {search_ip} was not found in the file.")
