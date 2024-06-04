@@ -1,8 +1,22 @@
+import os
+import requests
 import tkinter as tk
 from tkinter import messagebox
 
+# Define the fixed URL of the GitHub file
+FIXED_URL = 'https://raw.githubusercontent.com/SecOps-Institute/Tor-IP-Addresses/master/tor-nodes.lst'
+FILE_NAME = 'downloaded_file.py'
 
-FILE_NAME = 'ExitNodes.py'
+def download_file():
+    try:
+        response = requests.get(FIXED_URL)
+        if response.status_code == 200:
+            with open(FILE_NAME, 'w') as file:
+                file.write(response.text)
+        else:
+            result_label.config(text=f"Failed to download the file. Status code: {response.status_code}")
+    except Exception as e:
+        messagebox.showerror("Download Error", f"An error occurred: {e}")
 
 def search_ip_in_file():
     search_ip = ip_entry.get()
@@ -23,22 +37,25 @@ def search_ip_in_file():
     except Exception as e:
         messagebox.showerror("Search Error", f"An error occurred: {e}")
 
-
+# Create the main window
 root = tk.Tk()
-root.title("IP Address Search in File")
+root.title("Tor IP Address Search in File")
 
-
-tk.Label(root, text="Exit Node IP Address to Search:").grid(row=0, column=0, padx=10, pady=5)
+# Create and place the IP address entry
+tk.Label(root, text="IP Address to Search:").grid(row=0, column=0, padx=10, pady=5)
 ip_entry = tk.Entry(root, width=50)
 ip_entry.grid(row=0, column=1, padx=10, pady=5)
 
-
-search_button = tk.Button(root, text="Search IP", command=search_ip_in_file)
+# Create and place the search button
+search_button = tk.Button(root, text="Search IP in File", command=search_ip_in_file)
 search_button.grid(row=1, column=0, columnspan=2, pady=10)
 
-
+# Create and place the result label
 result_label = tk.Label(root, text="", fg="blue")
 result_label.grid(row=2, column=0, columnspan=2, pady=10)
 
+# Download the file at the start
+download_file()
 
+# Run the main loop
 root.mainloop()
