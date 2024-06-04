@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 
-FILE_NAME = 'example.py'
+FILE_NAME = 'ExitNodes.py'
 
 def search_ip_in_file():
     search_ip = ip_entry.get()
